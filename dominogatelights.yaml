@@ -16,8 +16,8 @@ logger:
 api:
 ota:
 dashboard_import:
-  package_import_url: github://laptopology/Domino-Gate-Lights/dominogatelights.yaml
   import_full_config: true
+  package_import_url: github://laptopology/Domino-Gate-Lights/dominogatelights.yaml@main
 wifi:
   ap:
     password: "12345678"
