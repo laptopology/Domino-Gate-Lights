@@ -5,7 +5,8 @@ substitutions:
 esphome:
   name: "${name}"
   friendly_name: "${friendly_name}"
-  name_add_mac_suffix: true
+  # TRUE if using same firmware for other devices like this
+  name_add_mac_suffix: false
   project:
     name: "HomeConnected.Domino_Gate_Lights"
     version: "2024.25.4"
@@ -38,10 +39,23 @@ light:
         from: 0
         to: 9
     effects:
-      - pulse:
-      - random:
-      - strobe:
       - addressable_scan:
+      - addressable_lambda:
+          name: "Police"
+          update_interval: 50ms
+          lambda: |-
+            static uint16_t pos = 0;
+            if (pos < it.size() / 2) {
+              it.range(pos, pos + it.size() / 2) = Color(255, 0, 0);       //fill red
+              it.range(0, pos) = Color(0, 0, 255);                         //fill blue
+              it.range(pos + it.size() / 2, it.size()) = Color(0, 0, 255); //fill blue
+            } else {
+              it.range(pos - it.size() / 2, pos) = Color(0, 0, 255);       //fill blue
+              it.range(0, pos - it.size() / 2) = Color(255, 0, 0);         //fill red
+              it.range(pos, it.size()) = Color(255, 0, 0);                 //fill red
+            }
+            pos++;
+            if (pos >= it.size()) pos = 0; //rollover
   - platform: partition
     name: "Outside Light"
     segments: 
@@ -49,12 +63,9 @@ light:
         from: 10
         to: 25
     effects:
-      - pulse:
-      - random:
-      - strobe:
       - addressable_scan:
       - addressable_lambda:
-          name: "Police All"
+          name: "Police"
           update_interval: 50ms
           lambda: |-
             static uint16_t pos = 0;
