@@ -1,4 +1,26 @@
 # Configuration
+substitutions:
+  name: "dominogatelights"
+  friendly_name: "Gate Lights"
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: "HomeConnected.Domino_Gate_Lights"
+    version: "2024.25.4"
+esp8266:
+  board: d1_mini
+logger:
+api:
+ota:
+dashboard_import:
+  package_import_url: github://laptopology/Domino-Gate-Lights/dominogatelights.yaml
+  import_full_config: true
+wifi:
+  ap:
+    password: "12345678"
+captive_portal:
 
 # Components
 light:
