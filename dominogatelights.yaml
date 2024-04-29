@@ -1,0 +1,49 @@
+# Configuration
+
+# Components
+light:
+  - platform: neopixelbus
+    variant: ws2812
+    type: GRB
+    pin: D7 # GPIO3
+    num_leds: 26
+    internal: True
+    id: domino_strip
+  - platform: partition
+    name: "Inside Light"
+    segments: 
+      - id: domino_strip
+        from: 0
+        to: 9
+    effects:
+      - pulse:
+      - random:
+      - strobe:
+      - addressable_scan:
+  - platform: partition
+    name: "Outside Light"
+    segments: 
+      - id: domino_strip
+        from: 10
+        to: 25
+    effects:
+      - pulse:
+      - random:
+      - strobe:
+      - addressable_scan:
+      - addressable_lambda:
+          name: "Police All"
+          update_interval: 50ms
+          lambda: |-
+            static uint16_t pos = 0;
+            if (pos < it.size() / 2) {
+              it.range(pos, pos + it.size() / 2) = Color(255, 0, 0);       //fill red
+              it.range(0, pos) = Color(0, 0, 255);                         //fill blue
+              it.range(pos + it.size() / 2, it.size()) = Color(0, 0, 255); //fill blue
+            } else {
+              it.range(pos - it.size() / 2, pos) = Color(0, 0, 255);       //fill blue
+              it.range(0, pos - it.size() / 2) = Color(255, 0, 0);         //fill red
+              it.range(pos, it.size()) = Color(255, 0, 0);                 //fill red
+            }
+            pos++;
+            if (pos >= it.size()) pos = 0; //rollover
