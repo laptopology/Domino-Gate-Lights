@@ -39,6 +39,8 @@ light:
         from: 0
         to: 9
     effects:
+      - strobe:
+      - pulse:    
       - addressable_scan:
       - addressable_lambda:
           name: "Police"
@@ -63,6 +65,8 @@ light:
         from: 10
         to: 25
     effects:
+      - strobe:
+      - pulse:    
       - addressable_scan:
       - addressable_lambda:
           name: "Police"
